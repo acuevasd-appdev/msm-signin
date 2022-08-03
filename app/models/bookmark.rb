@@ -9,4 +9,9 @@
 #  user_id    :integer
 #
 class Bookmark < ApplicationRecord
+  
+  belongs_to(:movies)
+
+  has_many(:users)
+
 end

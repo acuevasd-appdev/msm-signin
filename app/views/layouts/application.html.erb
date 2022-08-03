@@ -15,6 +15,20 @@
   </head>
 
   <body>
+    <nav>
+      <ul>
+        <% if session[:user_id]== nil %> 
+          <li><a href="/user_sign_in">Sign in</a></li>
+          <li><a href="/user_sign_up">Sign up</a></li>
+        <% else %>
+          <% user = User.where(:id => session[:user_id]).at(0) %>
+          <li><a href="/user_sign_out">Sign out</a></li>
+          <li><a href="/bookmarks">My bookmarks <%= user.first_name %></a></li>
+        <% end %>
+        <li><a href="/">Home</a></li>
+
+      </ul>
+    </nav>
     <%= yield %>
   </body>
 </html>

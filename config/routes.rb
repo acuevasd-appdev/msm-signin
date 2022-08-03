@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  get("/", { :controller =>"directors", :action => "home"})
+
+  get("/directors/youngest", { :controller => "directors", :action => "max_dob" })
+  
+  get("/directors/eldest", { :controller => "directors", :action => "min_dob" })
+
   # Routes for the User account:
 
   # SIGN UP FORM

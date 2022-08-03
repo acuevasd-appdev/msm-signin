@@ -57,4 +57,30 @@ class DirectorsController < ApplicationController
 
     redirect_to("/directors", { :notice => "Director deleted successfully."} )
   end
+
+  def home
+    render({ :template => "directors/home.html.erb" })
+  end
+
+  def max_dob
+    directors_by_dob_desc = Director.
+      all.
+      where.not({ :dob => nil }).
+      order({ :dob => :desc })
+
+    @youngest = directors_by_dob_desc.at(0)
+
+    render({ :template => "directors/youngest.html.erb" })
+  end
+
+  def min_dob
+    directors_by_dob_asc = Director.
+      all.
+      where.not({ :dob => nil }).
+      order({ :dob => :asc })
+      
+    @eldest = directors_by_dob_asc.at(0)
+
+    render({ :template => "directors/eldest.html.erb" })
+  end
 end
