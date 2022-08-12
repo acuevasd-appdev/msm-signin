@@ -1,40 +1,34 @@
 <div>
   <div>
     <h1>
+    <% if session[:user_id] != nil %>
+      <%= @current_user.first_name %>'s bookmarks
+    <% else %>
       List of all bookmarks
+    <% end %>
     </h1>
   </div>
 </div>
 
 <hr>
 
+
+
 <div>
   <div>
-    <h2>
-      Add a new bookmark
-    </h2>
-
-    <form action="/insert_bookmark" method="post">
-      <div>
-        <label for="movie_id_box">
-          Movie
-        </label>
-
-        <input type="text" id="movie_id_box" name="query_movie_id">
-      </div>
-
-      <div>
-        <label for="user_id_box">
-          User
-        </label>
-
-        <input type="text" id="user_id_box" name="query_user_id">
-      </div>
-
-      <button>
-        Create bookmark
-      </button>
-    </form>
+    <% if @current_user != nil %>
+      <form action="/insert_bookmark" method="post">
+        <input type="hidden" name="query_movie_id" >
+        <select>
+          <% Movie.all.order(:title).each do |a_movie|%>
+            <option value="<%= a_movie.id %>">
+              <%= a_movie.title %>
+            </option>
+            <% end %>
+        </select>
+        <button>Bookmark this movie!</button>
+        </form>     
+    <% end %>
   </div>
 </div>
 
@@ -58,7 +52,8 @@
       <% @list_of_bookmarks.each do |a_bookmark| %>
       <tr>
         <td>
-          <%= a_bookmark.movie_id %>
+          <%= a_bookmark.movie.title %>
+
         </td>
 
         <td>
@@ -66,9 +61,11 @@
         </td>
 
         <td>
-          <a href="/delete_bookmark/<%= a_bookmark.id %>">
-            Un-bookmark
-          </a>
+          <% if @current_user != nil %>
+            <a href="/delete_bookmark/<%= a_bookmark.id %>">
+              Un-bookmark
+            </a>
+          <% end %>
         </td>
       </tr>
       <% end %>
